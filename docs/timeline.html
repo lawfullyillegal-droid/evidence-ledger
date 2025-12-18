@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Court of Record - Email Timeline</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #3498db, #2c3e50);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 70px;
+            margin-bottom: 40px;
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            left: 18px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #3498db;
+            border: 4px solid white;
+            box-shadow: 0 0 0 4px #3498db33;
+        }
+        
+        .timeline-marker.sent {
+            background: #27ae60;
+            box-shadow: 0 0 0 4px #27ae6033;
+        }
+        
+        .timeline-marker.urgent {
+            background: #e74c3c;
+            box-shadow: 0 0 0 4px #e74c3c33;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 4px #e74c3c33; }
+            50% { box-shadow: 0 0 0 8px #e74c3c22; }
+            100% { box-shadow: 0 0 0 4px #e74c3c33; }
+        }
+        
+        .timeline-content {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .timeline-content:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-date {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-title {
+            color: #2c3e50;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .meta-label {
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .timeline-summary {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        
+        .badge-sent {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .badge-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .badge-urgent {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .view-details {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9em;
+            transition: background 0.3s;
+        }
+        
+        .view-details:hover {
+            background: #2980b9;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .timeline::before {
+                left: 15px;
+            }
+            
+            .timeline-item {
+                padding-left: 50px;
+            }
+            
+            .timeline-marker {
+                left: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📄 Personal Court of Record</h1>
+        <div class="subtitle">Email Timeline - Travis Steven Ryle / The Travis Ryle Private Bank Estate & Trust</div>
+        
+        <div class="timeline">
+            <!-- December 18, 2025 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">December 18, 2025 - 11:13 AM MST</div>
+                    <div class="timeline-title">[SENT] Public Records Request to Kingman Justice Court</div>
+                    <div class="timeline-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">To:</span>
+                            <span>kingmanjustice@mohavecourts.com</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Cases:</span>
+                            <span>TR2024-0143, CV 2023 0335 UN</span>
+                        </div>
+                    </div>
+                    <div class="timeline-summary">
+                        Comprehensive request for all court records, law enforcement documentation including body-cam/dash-cam footage, exhibits, and cross-reference materials showing relationship between concurrent criminal and civil cases.
+                    </div>
+                    <div>
+                        <span class="badge badge-pending">⏳ Awaiting Response</span>
+                        <span class="badge badge-sent">📝 Public Records Request</span>
+                    </div>
+                    <a href="https://github.com/lawfullyillegal-droid/evidence-ledger/blob/main/emails/sent/2025-12-18_public-records-request_kingman-justice-court.md" class="view-details" target="_blank">📄 View Full Record</a>
+                </div>
+            </div>
+            
+            <!-- November 21, 2025 -->
+            <div class="timeline-item">
+                <div class="timeline-marker urgent"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">November 21, 2025 - 01:42 AM MST</div>
+                    <div class="timeline-title">[SENT] URGENT NOTICE! FARA to LexisNexis</div>
+                    <div class="timeline-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">To:</span>
+                            <span>RLX@tpg-ir.com, corporate.secretary@relx.com</span>
+                        </div>
+                    </div>
+                    <div class="timeline-summary">
+                        Foreign Agents Registration Act notice sent to RELX Group/LexisNexis corporate offices.
+                    </div>
+                    <div>
+                        <span class="badge badge-sent">✅ Sent</span>
+                        <span class="badge badge-urgent">⚠️ Urgent Notice</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- November 20, 2025 -->
+            <div class="timeline-item">
+                <div class="timeline-marker urgent"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">November 20, 2025 - 03:41 PM MST</div>
+                    <div class="timeline-title">[SENT] FINAL NOTICE to Kingman Justice Court</div>
+                    <div class="timeline-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">To:</span>
+                            <span>kingmanjustice@mohavecourts.com</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Cases:</span>
+                            <span>TR2024-0143, CV 2023 0335 UN</span>
+                        </div>
+                    </div>
+                    <div class="timeline-summary">
+                        Final notice to Kingman Justice Court regarding outstanding matters in both traffic/criminal and civil cases.
+                    </div>
+                    <div>
+                        <span class="badge badge-sent">✅ Sent</span>
+                        <span class="badge badge-urgent">🔴 Final Notice</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- November 6, 2025 -->
+            <div class="timeline-item">
+                <div class="timeline-marker sent"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">November 6, 2025 - 12:13 PM MST</div>
+                    <div class="timeline-title">[SENT] NOTICE OF LIABILITY to Cathy Smith</div>
+                    <div class="timeline-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">To:</span>
+                            <span>Cathy Smith</span>
+                        </div>
+                    </div>
+                    <div class="timeline-summary">
+                        Formal notice of liability sent.
+                    </div>
+                    <div>
+                        <span class="badge badge-sent">✅ Sent</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>This timeline is maintained as an official record for legal proceedings.</strong></p>
+            <p style="margin-top: 10px;">
+                <a href="https://lawfully-illegal.com" target="_blank">lawfully-illegal.com</a> | 
+                <a href="https://github.com/lawfullyillegal-droid/evidence-ledger" target="_blank">GitHub Evidence Ledger</a> | 
+                <a href="https://github.com/lawfullyillegal-droid/Trust-identifier-trace" target="_blank">Case Tracking</a>
+            </p>
+            <p style="margin-top: 10px; font-size: 0.85em;">
+                Last Updated: December 18, 2025 | All Rights Reserved
+            </p>
+        </div>
+    </div>
+</body>
+</html>
